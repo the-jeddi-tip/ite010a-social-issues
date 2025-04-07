@@ -1,3 +1,4 @@
+import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
@@ -44,6 +45,7 @@ export default function SettingsScreen() {
         </View>
     )    
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
