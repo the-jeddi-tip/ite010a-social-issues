@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { auth, db } from '../../firebaseConfig'
+import { router } from 'expo-router';
 
 export default function RegisterScreen() {
   const [fullName, setFullName] = useState('');
@@ -39,6 +40,8 @@ export default function RegisterScreen() {
         })
 
         Alert.alert('Success', `Welcome ${fullName}!`);
+
+        router.replace('/(main)')
       })
       .catch((error) => {
         console.log("Error Code:", error.code); // Log the error code

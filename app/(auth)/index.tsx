@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { StatusBar } from 'expo-status-bar';
 import { auth } from '../../firebaseConfig'
+import { router } from 'expo-router';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -14,6 +15,8 @@ export default function LoginScreen() {
       .then((userCredential) => {
         const user = userCredential.user;
         Alert.alert('Success', `Logged in ${user.email}`);
+
+        router.replace('/(main)')
       })
       .catch((error) => {
         Alert.alert('Login failed', error.message)
