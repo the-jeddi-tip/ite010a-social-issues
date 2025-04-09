@@ -14,11 +14,11 @@ export default function MainLayout() {
                 }}
             />
             <Tabs.Screen
-                name="resource"
+                name="resource-hub"
                 options={{
                     headerShown: false,
                     title: 'Resource Hub',
-                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="user" color={color} />,
+                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="book" color={color} />,
                 }}
             />
             <Tabs.Screen
@@ -26,7 +26,7 @@ export default function MainLayout() {
                 options={{
                     headerShown: false,
                     title: 'Home',
-                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="user" color={color} />,
+                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="home" color={color} />,
                 }}
             />
             <Tabs.Screen
@@ -34,7 +34,7 @@ export default function MainLayout() {
                 options={{
                     headerShown: false,
                     title: 'Jobs',
-                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="user" color={color} />,
+                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="list" color={color} />,
                 }}
             />
             <Tabs.Screen
@@ -42,7 +42,21 @@ export default function MainLayout() {
                 options={{
                     headerShown: false,
                     title: 'Settings',
-                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="user" color={color} />,
+                    tabBarIcon: ({ color }: { color : string }) => <FontAwesome size={28} name="gear" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="resource"
+                options={{
+                    href: null,
+                    headerShown: false,
+                }}
+            />
+            <Tabs.Screen
+                name="job"
+                options={{
+                    href: null,
+                    headerShown: false,
                 }}
             />
         </Tabs>

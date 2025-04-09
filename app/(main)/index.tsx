@@ -1,74 +1,157 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import TopBar from '@/components/topBar';
 
 export default function HomeScreen() {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleNotificationPress = () => {
+    // Handle notification press
+    Alert.alert('Notifications', 'No new notifications at the moment.');
+  };
+
+  const handleProfilePress = () => {
+    // Navigate to profile screen
+    router.push('/profile');
+  };
+
+  const navigateTo = (route : string) => {
+    switch(route) {
+      case 'resources':
+        router.push('/resource-hub');
+        break;
+      case 'jobs':
+        Alert.alert('Coming Soon', 'Job listings will be available soon!');
+        break;
+      case 'profile':
+        router.push('/profile');
+        break;
+      case 'accessibility':
+        Alert.alert('Coming Soon', 'Accessibility settings will be available soon!');
+        break;
+      default:
+        break;
+    }
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.centeredContainer}>
+        <ActivityIndicator size="large" color="#4C956C" />
+        <Text style={styles.loadingText}>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#E0F0E0" barStyle="dark-content" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.logoText}>ReachOut</Text>
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.notificationButton}>
-            <Ionicons name="notifications-outline" size={24} color="#333" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.profileButton}>
-            <View style={styles.profileCircle} />
-          </TouchableOpacity>
+      <StatusBar backgroundColor="#E8F4EA" barStyle="dark-content" />
+      <TopBar
+        title="ReachOut"
+        onNotificationPress={handleNotificationPress}
+        onProfilePress={handleProfilePress}
+      />
+
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* Main Content */}
+        <View style={styles.mainContent}>
+          <Text style={styles.title}>Equal Opportunities for All</Text>
+          <Text style={styles.subtitle}>Because Ability is Limitless</Text>
+
+          {/* Image */}
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../assets/logo.png')}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </View>
         </View>
-      </View>
-      
-      {/* Main Content */}
-      <View style={styles.mainContent}>
-        <Text style={styles.title}>Equal Opportunities for All</Text>
-        <Text style={styles.subtitle}>Because Ability is Limitless</Text>
-        
-        {/* Image */}
-        <View style={styles.imageContainer}>
-          {/* <Image
-            source={require('../assets/collaboration.png')}
-            style={styles.image}
-            resizeMode="contain"
-          /> */}
+
+        {/* Navigation Tiles */}
+        <View style={styles.tilesContainer}>
+          <Text style={styles.sectionTitle}>Quick Access</Text>
+          <View style={styles.tilesRow}>
+            <TouchableOpacity 
+              style={styles.tile} 
+              onPress={() => navigateTo('resources')}
+            >
+              <View style={styles.tileContent}>
+                <Ionicons name="cube-outline" size={32} color="#2D6A4F" />
+                <Text style={styles.tileText}>Resource Hub</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.tile}
+              onPress={() => navigateTo('jobs')}
+            >
+              <View style={styles.tileContent}>
+                <Ionicons name="briefcase-outline" size={32} color="#2D6A4F" />
+                <Text style={styles.tileText}>Jobs</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.tilesRow}>
+            <TouchableOpacity 
+              style={styles.tile}
+              onPress={() => navigateTo('profile')}
+            >
+              <View style={styles.tileContent}>
+                <Ionicons name="person-outline" size={32} color="#2D6A4F" />
+                <Text style={styles.tileText}>Profile</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.tile}
+              onPress={() => navigateTo('accessibility')}
+            >
+              <View style={styles.tileContent}>
+                <Ionicons name="settings-outline" size={32} color="#2D6A4F" />
+                <Text style={styles.tileText}>Accessibility Settings</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      
-      {/* Navigation Tiles */}
-      <View style={styles.tilesContainer}>
-        <View style={styles.tilesRow}>
-          <TouchableOpacity style={styles.tile}>
-            <View style={styles.tileContent}>
-              <Ionicons name="cube-outline" size={32} color="#333" />
-              <Text style={styles.tileText}>Resource Hub</Text>
+
+        {/* Featured Resources Section */}
+        <View style={styles.featuredSection}>
+          <Text style={styles.sectionTitle}>Featured Resources</Text>
+          <TouchableOpacity style={styles.featuredCard} onPress={() => navigateTo('resources')}>
+            <View style={styles.featuredContent}>
+              <Ionicons name="star" size={24} color="#F9C74F" style={styles.featuredIcon} />
+              <View style={styles.featuredTextContainer}>
+                <Text style={styles.featuredTitle}>New Accessibility Guidelines</Text>
+                <Text style={styles.featuredDescription}>
+                  Learn about the latest accessibility standards for digital platforms.
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={24} color="#2D6A4F" />
             </View>
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.tile}>
-            <View style={styles.tileContent}>
-              <Ionicons name="briefcase-outline" size={32} color="#333" />
-              <Text style={styles.tileText}>Jobs</Text>
+          <TouchableOpacity style={styles.featuredCard} onPress={() => navigateTo('resources')}>
+            <View style={styles.featuredContent}>
+              <Ionicons name="bulb" size={24} color="#F9C74F" style={styles.featuredIcon} />
+              <View style={styles.featuredTextContainer}>
+                <Text style={styles.featuredTitle}>Inclusive Design Workshop</Text>
+                <Text style={styles.featuredDescription}>
+                  Join our upcoming workshop on creating inclusive digital experiences.
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={24} color="#2D6A4F" />
             </View>
           </TouchableOpacity>
         </View>
         
-        <View style={styles.tilesRow}>
-          <TouchableOpacity style={styles.tile}>
-            <View style={styles.tileContent}>
-              <Ionicons name="person-outline" size={32} color="#333" />
-              <Text style={styles.tileText}>Profile</Text>
-            </View>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.tile}>
-            <View style={styles.tileContent}>
-              <Ionicons name="settings-outline" size={32} color="#333" />
-              <Text style={styles.tileText}>Accessibility Settings</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+        {/* Bottom spacing */}
+        <View style={styles.bottomSpace} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -76,38 +159,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E0F0E0', // Light mint green background
+    backgroundColor: '#E8F4EA', // Matching other screens
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#D0E0D0',
-  },
-  logoText: {
-    fontSize: 24,
-    fontWeight: '500',
-    color: '#333',
-    fontFamily: 'serif',
-  },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  notificationButton: {
-    marginRight: 15,
-  },
-  profileButton: {
-    
-  },
-  profileCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#DDDDDD',
+  scrollView: {
+    flex: 1,
   },
   mainContent: {
     padding: 20,
@@ -116,7 +171,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#2D6A4F', // Matching color scheme from other screens
     textAlign: 'center',
   },
   subtitle: {
@@ -144,10 +199,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 15,
+    color: '#2D6A4F',
+    paddingHorizontal: 5,
+  },
   tilesContainer: {
-    flex: 1,
     padding: 15,
-    justifyContent: 'center',
   },
   tilesRow: {
     flexDirection: 'row',
@@ -157,7 +217,7 @@ const styles = StyleSheet.create({
   tile: {
     width: '48%',
     aspectRatio: 1,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
@@ -173,9 +233,57 @@ const styles = StyleSheet.create({
   },
   tileText: {
     marginTop: 8,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
     color: '#333',
-  }
+  },
+  featuredSection: {
+    padding: 15,
+  },
+  featuredCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
+    padding: 15,
+  },
+  featuredContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  featuredIcon: {
+    marginRight: 12,
+  },
+  featuredTextContainer: {
+    flex: 1,
+  },
+  featuredTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  featuredDescription: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
+  },
+  bottomSpace: {
+    height: 30,
+  },
+  centeredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E8F4EA',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#2D6A4F',
+  },
 });

@@ -6,6 +6,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { auth, db } from '../../firebaseConfig'
 import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RegisterScreen() {
   const [fullName, setFullName] = useState('');
@@ -51,84 +52,86 @@ export default function RegisterScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.container}
-    >
-      <StatusBar style="auto" />
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.logoContainer}>
-          {/* <Image
-            source={require('../assets/logo.png')}
-            style={styles.logo}
-            resizeMode="contain"
-          /> */}
-          <Text style={styles.appTitle}>ReachOut</Text>
-        </View>
-
-        <View style={styles.formContainer}>
-          <Text style={styles.headerText}>Create Account</Text>
-          <Text style={styles.subHeaderText}>Sign up to get started</Text>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Full Name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your full name"
-              autoCapitalize="words"
-              onChangeText={setFullName}
-              value={fullName}
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.container}
+      >
+        <StatusBar style="auto" />
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('../../assets/logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
             />
+            <Text style={styles.appTitle}>ReachOut</Text>
           </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              onChangeText={setEmail}
-              value={email}
-            />
-          </View>
+          <View style={styles.formContainer}>
+            <Text style={styles.headerText}>Create Account</Text>
+            <Text style={styles.subHeaderText}>Sign up to get started</Text>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Create a password"
-              secureTextEntry
-              onChangeText={setPassword}
-              value={password}
-            />
-          </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Full Name</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your full name"
+                autoCapitalize="words"
+                onChangeText={setFullName}
+                value={fullName}
+              />
+            </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Confirm Password</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm your password"
-              secureTextEntry
-              onChangeText={setConfirmPassword}
-              value={confirmPassword}
-            />
-          </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={setEmail}
+                value={email}
+              />
+            </View>
 
-          <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-            <Text style={styles.registerButtonText}>Sign Up</Text>
-          </TouchableOpacity>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Create a password"
+                secureTextEntry
+                onChangeText={setPassword}
+                value={password}
+              />
+            </View>
 
-          <View style={styles.termsContainer}>
-            <Text style={styles.termsText}>
-              By signing up, you agree to our{' '}
-              <Text style={styles.termsLink}>Terms of Service</Text> and{' '}
-              <Text style={styles.termsLink}>Privacy Policy</Text>
-            </Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Confirm Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Confirm your password"
+                secureTextEntry
+                onChangeText={setConfirmPassword}
+                value={confirmPassword}
+              />
+            </View>
+
+            <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+              <Text style={styles.registerButtonText}>Sign Up</Text>
+            </TouchableOpacity>
+
+            <View style={styles.termsContainer}>
+              <Text style={styles.termsText}>
+                By signing up, you agree to our{' '}
+                <Text style={styles.termsLink}>Terms of Service</Text> and{' '}
+                <Text style={styles.termsLink}>Privacy Policy</Text>
+              </Text>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -147,8 +150,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   logo: {
-    width: 70,
-    height: 70,
+    width: 300,
+    height: 167,
+    borderRadius: 25,
   },
   appTitle: {
     fontSize: 22,
