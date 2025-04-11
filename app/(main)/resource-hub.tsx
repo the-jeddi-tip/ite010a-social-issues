@@ -15,6 +15,7 @@ export default function ResourceHubScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [profilePicture, setProfilePicture] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -38,6 +39,23 @@ export default function ResourceHubScreen() {
       }
     };
 
+    const fetchProfilePicture = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const userRef = doc(db, 'users', user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            setProfilePicture(data.profilePicture || '');
+          }
+        } catch (err) {
+          console.error('Error fetching profile picture:', err);
+        }
+      }
+    };
+
+    fetchProfilePicture();
     fetchResources();
   }, []);
 
@@ -98,6 +116,7 @@ export default function ResourceHubScreen() {
           title="Resource Hub"
           onNotificationPress={handleNotificationPress}
           onProfilePress={handleProfilePress}
+          profilePicture={profilePicture}
         />
 
         <View style={styles.searchContainer}>

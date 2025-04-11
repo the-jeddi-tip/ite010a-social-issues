@@ -171,7 +171,9 @@ export default function ProfileScreen() {
                     title="Profile"
                     onNotificationPress={handleNotificationPress}
                     onProfilePress={handleProfilePress}
+                    profilePicture={savedImage}
                 />
+
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.profileContainer}>
                         <TouchableOpacity onPress={() => setShowUpdateSection(!showUpdateSection)}>
@@ -474,6 +476,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: "center",
         marginBottom: 15,
+        marginTop: 10,
     },
     saveButtonText: {
         color: "white",

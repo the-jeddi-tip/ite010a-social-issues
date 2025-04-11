@@ -44,7 +44,7 @@ export default function JobDetailScreen() {
   const handleApply = () => {
     Alert.alert(
       'Apply for this position',
-      'This feature is coming soon! Your application will be sent to the employer.',
+      'Your application will be sent to the employer.',
       [
         {
           text: 'OK',

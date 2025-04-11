@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Alert, Scro
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../firebaseConfig';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { auth, db } from '../../firebaseConfig';
 import TopBar from '@/components/topBar';
 
 export default function JobsScreen() {
@@ -14,6 +14,7 @@ export default function JobsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [profilePicture, setProfilePicture] = useState('');
 
   const jobCategories = [
     { id: 1, name: 'OFFICE' },
@@ -50,20 +51,37 @@ export default function JobsScreen() {
       }
     };
 
+    const fetchProfilePicture = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const userRef = doc(db, 'users', user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            setProfilePicture(data.profilePicture || '');
+          }
+        } catch (err) {
+          console.error('Error fetching profile picture:', err);
+        }
+      }
+    };
+
+    fetchProfilePicture();
     fetchJobs();
   }, []);
 
   // Filter jobs based on search query and selected category
   useEffect(() => {
     let result = jobs;
-    
+
     // Filter by category if one is selected
     if (selectedCategory) {
-      result = result.filter(job => 
+      result = result.filter(job =>
         job.category.toLowerCase() === selectedCategory.toLowerCase()
       );
     }
-    
+
     // Filter by search query
     if (searchQuery.trim() !== '') {
       result = result.filter(job =>
@@ -74,7 +92,7 @@ export default function JobsScreen() {
         ))
       );
     }
-    
+
     setFilteredJobs(result);
   }, [searchQuery, selectedCategory, jobs]);
 
@@ -140,14 +158,14 @@ export default function JobsScreen() {
   const renderJobCard = (job, size = 'normal') => {
     const isLarge = size === 'large';
     return (
-      <TouchableOpacity 
-        key={job.id} 
+      <TouchableOpacity
+        key={job.id}
         style={isLarge ? styles.popularJobCard : styles.jobCard}
         onPress={() => handleJobPress(job)}
       >
-        <Image 
-          source={{ uri: job.imageUrl }} 
-          style={isLarge ? styles.popularJobImage : styles.jobImage} 
+        <Image
+          source={{ uri: job.imageUrl }}
+          style={isLarge ? styles.popularJobImage : styles.jobImage}
         />
         <View style={styles.jobTitleContainer}>
           <Text style={styles.jobTitle}>{job.title}</Text>
@@ -164,6 +182,7 @@ export default function JobsScreen() {
         title="Jobs"
         onNotificationPress={handleNotificationPress}
         onProfilePress={handleProfilePress}
+        profilePicture={profilePicture}
       />
 
       <View style={styles.searchContainer}>
@@ -187,15 +206,15 @@ export default function JobsScreen() {
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Categories */}
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false} 
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
           style={styles.categoriesScroll}
           contentContainerStyle={styles.categoriesContainer}
         >
           {jobCategories.map((category) => (
-            <TouchableOpacity 
-              key={category.id} 
+            <TouchableOpacity
+              key={category.id}
               style={[
                 styles.categoryButton,
                 selectedCategory === category.name && styles.categoryButtonSelected
@@ -241,7 +260,7 @@ export default function JobsScreen() {
             </View>
           </View>
         )}
-        
+
         {/* Bottom spacing */}
         <View style={styles.bottomSpace} />
       </ScrollView>
