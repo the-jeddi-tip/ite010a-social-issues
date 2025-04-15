@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, TextInput, ActivityIndicator, Text, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebaseConfig'; // Import your Firebase config
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { auth, db } from '../../firebaseConfig'; // Import your Firebase config
 import ResourceCard from '../../components/resourceCard';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 15,
     marginBottom: 15,
+    marginVertical: 10,
     paddingHorizontal: 10,
     height: 46,
   },

@@ -69,7 +69,7 @@ export default function JobDetailScreen() {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => router.back()}
+            onPress={() => router.navigate('./jobs')}
           >
             <Ionicons name="arrow-back" size={24} color="#2D6A4F" />
           </TouchableOpacity>
@@ -87,7 +87,7 @@ export default function JobDetailScreen() {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => router.back()}
+          onPress={() => router.navigate('/jobs')}
         >
           <Ionicons name="arrow-back" size={24} color="#2D6A4F" />
         </TouchableOpacity>
@@ -152,6 +152,21 @@ export default function JobDetailScreen() {
               <Text style={styles.sectionHeader}>Benefits</Text>
               <View style={styles.listContainer}>
                 {job.benefits.map((item, index) => (
+                  <View key={index} style={styles.listItem}>
+                    <Text style={styles.bulletPoint}>•</Text>
+                    <Text style={styles.listItemText}>{item}</Text>
+                  </View>
+                ))}
+              </View>
+            </>
+          )}
+          
+          {/* Accessibility Features Section */}
+          {job.accessibilityFeatures && job.accessibilityFeatures.length > 0 && (
+            <>
+              <Text style={styles.sectionHeader}>Accessibility Features</Text>
+              <View style={styles.listContainer}>
+                {job.accessibilityFeatures.map((item, index) => (
                   <View key={index} style={styles.listItem}>
                     <Text style={styles.bulletPoint}>•</Text>
                     <Text style={styles.listItemText}>{item}</Text>

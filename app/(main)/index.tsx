@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import TopBar from '@/components/topBar';
+import { auth, db } from '@/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function HomeScreen() {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const userRef = doc(db, 'users', user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            setProfilePicture(data.profilePicture || '');
+          }
+        } catch (err) {
+          console.error('Error fetching profile picture:', err);
+        }
+      }
+    };
+
+    fetchProfilePicture();
+  }, []);
 
   const handleNotificationPress = () => {
     // Handle notification press
@@ -18,8 +41,8 @@ export default function HomeScreen() {
     router.push('/profile');
   };
 
-  const navigateTo = (route : string) => {
-    switch(route) {
+  const navigateTo = (route: string) => {
+    switch (route) {
       case 'resources':
         router.push('/resource-hub');
         break;
@@ -53,6 +76,7 @@ export default function HomeScreen() {
         title="ReachOut"
         onNotificationPress={handleNotificationPress}
         onProfilePress={handleProfilePress}
+        profilePicture={profilePicture}
       />
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -75,8 +99,8 @@ export default function HomeScreen() {
         <View style={styles.tilesContainer}>
           <Text style={styles.sectionTitle}>Quick Access</Text>
           <View style={styles.tilesRow}>
-            <TouchableOpacity 
-              style={styles.tile} 
+            <TouchableOpacity
+              style={styles.tile}
               onPress={() => navigateTo('resources')}
             >
               <View style={styles.tileContent}>
@@ -85,7 +109,7 @@ export default function HomeScreen() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.tile}
               onPress={() => navigateTo('jobs')}
             >
@@ -97,7 +121,7 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.tilesRow}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.tile}
               onPress={() => navigateTo('profile')}
             >
@@ -107,7 +131,7 @@ export default function HomeScreen() {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.tile}
               onPress={() => navigateTo('accessibility')}
             >
@@ -134,7 +158,7 @@ export default function HomeScreen() {
               <Ionicons name="chevron-forward" size={24} color="#2D6A4F" />
             </View>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.featuredCard} onPress={() => navigateTo('resources')}>
             <View style={styles.featuredContent}>
               <Ionicons name="bulb" size={24} color="#F9C74F" style={styles.featuredIcon} />
@@ -148,7 +172,7 @@ export default function HomeScreen() {
             </View>
           </TouchableOpacity>
         </View>
-        
+
         {/* Bottom spacing */}
         <View style={styles.bottomSpace} />
       </ScrollView>

@@ -35,13 +35,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#e4f5e7',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc'
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#2D6A4F',
   },
   iconContainer: {
     flexDirection: 'row',
